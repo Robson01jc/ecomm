@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser')
+const usersRepo = require('./repositories/users')
 
 const app = express();
 
@@ -18,14 +19,23 @@ app.get('/', (req, res) => {
 	`)
 });
 
-app.post('/', (req, res) => {
-	console.log(req.body);
+app.post('/', async (req, res) => {
+	const { email, password, passwordConfirmation } = req.body
+
+	const existingUser = await usersRepo.getOneBy({ email })
+	if (existingUser) {
+		return res.send('Email in use')
+	}
+
+	if (password !== passwordConfirmation) {
+		return res.send('Passwords must match')
+	}
+
+	await usersRepo.create({ email, password })
+
 	res.send('Account created!!!')
 })
 
 app.listen(3000, () => {
 	console.log('Listening...');
 })
-
-// Browser sends a little chunk of information, and then sits down and wait for confirmation.
-// Middlewares - pre-processing functions. (Code reuse)
