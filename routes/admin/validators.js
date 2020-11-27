@@ -21,6 +21,8 @@ module.exports = {
       if (existingUser) {
         throw new Error('Email in use')
       }
+
+      return true
     }),
   requirePassword: check('password')
     .trim()
@@ -34,6 +36,8 @@ module.exports = {
       if (passwordConfirmation !== req.body.password) {
         throw new Error('Passwords must match')
       }
+
+      return true
     }),
   requireEmailExists: check('email')
     .trim()
@@ -45,6 +49,8 @@ module.exports = {
       if (!user) {
         throw new Error('Email not found!')
       }
+
+      return true
     }),
   requireValidPasswordForUser: check('password')
     .trim()
@@ -58,5 +64,7 @@ module.exports = {
       if (!validPassword) {
         throw new Error('Invalid password')
       }
+
+      return true
     })
 }
