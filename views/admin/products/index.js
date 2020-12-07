@@ -1,4 +1,4 @@
-const layout = require('../layout');
+const layout = require('../layout')
 
 module.exports = ({ products }) => {
   const renderedProducts = products
@@ -20,9 +20,9 @@ module.exports = ({ products }) => {
           </form>
         </td>
       </tr>
-    `;
+    `
     })
-    .join('');
+    .join('')
 
   return layout({
     content: `
@@ -44,5 +44,5 @@ module.exports = ({ products }) => {
         </tbody>
       </table>
     `
-  });
-};
+  })
+}

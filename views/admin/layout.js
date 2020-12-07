@@ -35,5 +35,5 @@ module.exports = ({ content }) => {
         </div>
       </body>
     </html>
-  `;
-};
+  `
+}

@@ -1,6 +1,7 @@
 const express = require('express')
-const carts = require('../repositories/carts')
 const cartsRepo = require('../repositories/carts')
+const productsRepo = require('../repositories/products')
+const cartShowTemplate = require('../views/carts/show')
 
 const router = express.Router()
 
@@ -32,11 +33,36 @@ router.post('/cart/products', async (req, res) => {
     items: cart.items
   })
 
-  res.send('Product added to cart')
+  res.redirect('/cart')
 })
 
 // Receive a GET request to show all items in cart
+router.get('/cart', async (req, res) => {
+  if (!req.session.cartId) {
+    return res.redirect('/')
+  }
+
+  const cart = await cartsRepo.getOne(req.session.cartId)
+
+  for (const item of cart.items) {
+    const product = await productsRepo.getOne(item.id)
+
+    item.product = product
+  }
+
+  res.send(cartShowTemplate({ items: cart.items }))
+})
 
 // Receive a POST request to delete an item from a cart
+router.post('/cart/products/delete', async (req, res) => {
+  const { itemId } = req.body
+  const cart = await cartsRepo.getOne(req.session.cartId)
+
+  const items = cart.items.filter(item => item.id !== itemId)
+
+  await cartsRepo.update(req.session.cartId, { items })
+
+  return res.redirect('/cart')
+})
 
 module.exports = router

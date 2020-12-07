@@ -60,7 +60,7 @@ module.exports = class Repository {
       throw new Error(`Record with id ${id} not found`)
     }
 
-    Object.assign(record, attrs);
+    Object.assign(record, attrs)
     await this.writeAll(records)
   }
 

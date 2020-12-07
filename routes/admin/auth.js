@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express')
 
 const { handleErrors } = require('./middlewares')
 const usersRepo = require('../../repositories/users')
@@ -16,7 +16,7 @@ const router = express.Router()
 
 router.get('/signup', (req, res) => {
   res.send(signupTemplate({ req }))
-});
+})
 
 router.post(
   '/signup',
